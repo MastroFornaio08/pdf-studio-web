@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="Il tuo laboratorio PDF personale. Conversioni open source con GitHub Actions.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src https://api.github.com; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>PDF Studio · Il tuo laboratorio documenti</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="core.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <a class="brand" href="./"><span class="logo">p.</span><span>PDF Studio<small>IL TUO LABORATORIO</small></span></a>
+      <div class="nav-label">SPAZIO DI LAVORO</div>
+      <div class="nav-active"><span>▤</span> Converti documenti <span class="nav-dot"></span></div>
+      <a class="nav-link" id="repo-link" href="https://github.com/MastroFornaio08/pdf-studio-web" target="_blank" rel="noopener noreferrer"><span>↗</span> Il progetto su GitHub</a>
+      <div class="sidebar-note"><span class="tiny-pill">OPEN SOURCE</span><h3>I tuoi strumenti.<br>Il tuo account.</h3><p>Le conversioni vengono eseguite dalle tue GitHub Actions.</p><span class="note-line"></span><small>Nessun servizio esterno di conversione.</small></div>
+      <div class="side-bottom"><span class="green-dot"></span> Fatto per il tuo uso personale</div>
+    </aside>
+    <main>
+      <header class="topbar"><span>Documenti <span class="breadcrumb">/ Converti</span></span><button id="connection-button" class="account-button"><span id="connection-dot" class="status-dot"></span><span id="connection-label">Collega GitHub</span><span>⌄</span></button></header>
+      <section class="workspace">
+        <div class="eyebrow">MENO PASSAGGI, PIÙ POSSIBILITÀ</div>
+        <div class="intro"><div><h1>Dai una nuova forma<br>ai tuoi documenti<span>.</span></h1><p>Un file, il formato che ti serve. Al resto pensa GitHub.</p></div><div class="hero-symbol" aria-hidden="true"><span>PDF</span><b>↗</b></div></div>
+        <section class="converter" aria-labelledby="converter-title">
+          <div class="card-heading"><div><span class="step">01</span><h2 id="converter-title">Scegli la conversione</h2></div><span class="subtle">7 strumenti disponibili</span></div>
+          <div class="operation-grid" role="group" aria-label="Conversioni principali">
+            <button class="operation selected" data-operation="pdf_to_word" aria-pressed="true"><span class="format-icon word">W</span><span>PDF → Word<small>Testo modificabile</small></span><span class="radio"></span></button>
+            <button class="operation" data-operation="pdf_to_excel" aria-pressed="false"><span class="format-icon excel">X</span><span>PDF → Excel<small>Estrai le tabelle</small></span><span class="radio"></span></button>
+            <button class="operation" data-operation="office_to_pdf" aria-pressed="false"><span class="format-icon pdf">P</span><span>Office → PDF<small>Word, Excel, PowerPoint</small></span><span class="radio"></span></button>
+          </div>
+          <div class="other-formats"><label for="operation">Tutti i formati</label><select id="operation"><option value="pdf_to_word">PDF → Word (.docx)</option><option value="pdf_to_excel">PDF → Excel (.xlsx, tabelle)</option><option value="pdf_to_text">PDF → Testo (.txt)</option><option value="pdf_to_png">PDF → Immagini PNG</option><option value="pdf_to_jpg">PDF → Immagini JPG</option><option value="office_to_pdf">Word / Excel / PowerPoint → PDF</option><option value="images_to_pdf">Immagine → PDF</option></select></div>
+          <div class="divider"></div>
+          <div class="card-heading"><div><span class="step">02</span><h2>Aggiungi il tuo file</h2></div><span class="subtle">Un file alla volta · max 20 MB</span></div>
+          <input type="file" id="file-input" accept=".pdf" hidden>
+          <button type="button" class="dropzone" id="dropzone"><span class="upload-symbol" aria-hidden="true">↑</span><strong id="file-title">Trascina qui il tuo PDF</strong><span id="file-description">oppure clicca per scegliere dal computer</span><span class="file-tag" id="file-tag">PDF · FINO A 20 MB</span></button>
+          <p id="format-note" class="format-note">Serve un PDF con testo selezionabile. Le scansioni richiedono OCR, non incluso.</p>
+          <div id="public-warning" class="warning" hidden><label><input id="public-consent" type="checkbox"> Il repository è pubblico. Confermo che questo documento può essere visibile a tutti, anche nella cronologia Git.</label></div>
+          <div class="convert-bottom"><p><span class="green-dot"></span><span id="destination">Collega il tuo repository per iniziare</span></p><button id="convert-button" class="primary" disabled>Converti in Word <span>↗</span></button></div>
+        </section>
+        <section id="progress-card" class="progress-card" hidden aria-labelledby="progress-title"><div class="progress-heading"><span class="pulse" id="progress-icon"></span><h2 id="progress-title">Preparazione</h2><span id="elapsed" class="subtle"></span></div><p id="progress-message" role="status" aria-live="polite"></p><div class="progress-track"><span id="progress-bar"></span></div><div class="progress-actions"><a id="run-link" class="text-link" target="_blank" rel="noopener noreferrer" hidden>Apri esecuzione su GitHub ↗</a><a id="download-link" class="primary" target="_blank" rel="noopener noreferrer" hidden>Scarica ZIP su GitHub ↓</a><button id="resume-button" class="secondary" hidden>Riprendi controllo</button></div><p class="small-note">Per il download accedi anche a github.com con il tuo account. I risultati vengono conservati per 1 giorno.</p></section>
+        <div id="notice" class="notice" role="alert" hidden></div>
+        <div class="benefits"><div><span>01 /</span><h3>Collega il tuo account</h3><p>Un token limitato al repository, tenuto solo in memoria.</p></div><div><span>02 /</span><h3>Lascia lavorare le Actions</h3><p>La conversione parte su GitHub. Può richiedere qualche minuto.</p></div><div><span>03 /</span><h3>Scarica e continua</h3><p>Trovi il risultato e un report nello ZIP della conversione.</p></div></div>
+        <footer><span>PDF Studio <span class="footer-slash">/</span> Strumenti semplici, codice aperto.</span><a href="https://github.com/MastroFornaio08/pdf-studio-web/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">Licenza MIT ↗</a></footer>
+      </section>
+    </main>
+  </div>
+  <dialog id="connection-dialog" aria-labelledby="dialog-title"><form id="connection-form"><div class="dialog-header"><span class="tiny-pill">IL TUO ACCOUNT</span><button id="close-dialog" type="button" class="close-button" aria-label="Chiudi">×</button></div><h2 id="dialog-title">Collega GitHub</h2><p>Autorizza il tuo repository con un token personale. Non incollarlo nella chat.</p><div class="field-row"><label>Proprietario<input id="owner" value="MastroFornaio08" required autocomplete="off" spellcheck="false"></label><label>Repository<input id="repository" value="pdf-actions" required autocomplete="off" spellcheck="false"></label></div><label>Token GitHub<input type="password" id="token" placeholder="github_pat_…" required autocomplete="off" spellcheck="false"></label><details><summary>Come creo il token?</summary><ol><li>Apri <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">GitHub → Fine-grained tokens ↗</a>.</li><li>Scegli una scadenza breve e <strong>Only select repositories → pdf-actions</strong>.</li><li>In Repository permissions imposta <strong>Contents: Read and write</strong> e <strong>Actions: Read and write</strong>.</li><li>Genera il token e incollalo qui. Non occorrono permessi Workflows o accesso a tutti i repository.</li></ol></details><p class="token-note">Il token viene inviato solo alle API di GitHub. Non viene salvato in cookie, file o archiviazione del browser; ricaricando la pagina dovrai reinserirlo. I documenti caricati restano nella cronologia del repository.</p><p id="connection-error" class="error-text" role="alert"></p><div class="dialog-actions"><button id="disconnect" type="button" class="secondary" hidden>Scollega</button><button id="connect-submit" type="submit" class="primary">Collega repository ↗</button></div></form></dialog>
+</body>
+</html>
