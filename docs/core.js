@@ -41,14 +41,25 @@
         const hints = {401: 'Token non valido o scaduto.', 403: 'Permessi insufficienti o quota GitHub raggiunta.',
           404: 'Repository o workflow non accessibile. Controlla il nome e i repository autorizzati nel token.',
           422: 'GitHub non ha accettato la richiesta. Verifica che il workflow sia sul branch predefinito.'};
-        throw new Error(hints[response.status] || `GitHub ha risposto con errore ${response.status}.`);
+        const error = new Error(hints[response.status] || `GitHub ha risposto con errore ${response.status}.`);
+        error.status = response.status;
+        throw error;
       }
       return data;
     }
     async connect() {
-      const repo = await this.request('');
+      let repo;
+      try { repo = await this.request(''); }
+      catch (error) {
+        if (error.status === 404) throw new Error(`Il token non vede ${this.owner}/${this.repo}. Nelle impostazioni del token scegli Resource owner: ${this.owner}, poi Only select repositories e autorizza ${this.repo}. Seleziona il repository privato del convertitore, non quello del frontend.`);
+        throw error;
+      }
       if (!repo.permissions?.push) throw new Error('Il token deve consentire la scrittura nel repository.');
-      await this.request('/actions/workflows/convert.yml');
+      try { await this.request('/actions/workflows/convert.yml'); }
+      catch (error) {
+        if (error.status === 404 || error.status === 403) throw new Error(`Repository ${this.owner}/${this.repo} raggiungibile, ma workflow non accessibile. Nel token imposta Actions: Read and write e salva. Verifica anche che convert.yml sia presente e che GitHub Actions sia abilitato.`);
+        throw error;
+      }
       this.branch = repo.default_branch;
       this.private = repo.private;
       return repo;
