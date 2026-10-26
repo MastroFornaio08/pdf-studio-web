@@ -8,7 +8,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src https://api.github.com; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'">
   <title>PDF Studio · Il tuo laboratorio documenti</title>
   <link rel="stylesheet" href="style.css">
-  <script src="core.js?v=403-2" defer></script>
+  <script src="core.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body>
@@ -17,7 +17,7 @@
       <a class="brand" href="./"><span class="logo">p.</span><span>PDF Studio<small>IL TUO LABORATORIO</small></span></a>
       <div class="nav-label">SPAZIO DI LAVORO</div>
       <div class="nav-active"><span>▤</span> Converti documenti <span class="nav-dot"></span></div>
-      <a class="nav-link" id="repo-link" href="https://github.com/MastroFornaio08/pdf-studio-web" target="_blank" rel="noopener noreferrer"><span>↗</span> Il progetto su GitHub</a>
+      <a class="nav-link" id="repo-link" href="https://github.com/MastroFornaio08/pdf-actions" target="_blank" rel="noopener noreferrer"><span>↗</span> Il progetto su GitHub</a>
       <div class="sidebar-note"><span class="tiny-pill">OPEN SOURCE</span><h3>I tuoi strumenti.<br>Il tuo account.</h3><p>Le conversioni vengono eseguite dalle tue GitHub Actions.</p><span class="note-line"></span><small>Nessun servizio esterno di conversione.</small></div>
       <div class="side-bottom"><span class="green-dot"></span> Fatto per il tuo uso personale</div>
     </aside>
@@ -38,14 +38,14 @@
           <div class="card-heading"><div><span class="step">02</span><h2>Aggiungi il tuo file</h2></div><span class="subtle">Un file alla volta · max 20 MB</span></div>
           <input type="file" id="file-input" accept=".pdf" hidden>
           <button type="button" class="dropzone" id="dropzone"><span class="upload-symbol" aria-hidden="true">↑</span><strong id="file-title">Trascina qui il tuo PDF</strong><span id="file-description">oppure clicca per scegliere dal computer</span><span class="file-tag" id="file-tag">PDF · FINO A 20 MB</span></button>
-          <p id="format-note" class="format-note">Serve un PDF con testo selezionabile. Le scansioni richiedono OCR, non incluso.</p>
+          <p id="format-note" class="format-note">OCR automatico per le scansioni, in italiano e inglese. In Word l’impaginazione OCR è semplificata.</p>
           <div id="public-warning" class="warning" hidden><label><input id="public-consent" type="checkbox"> Il repository è pubblico. Confermo che questo documento può essere visibile a tutti, anche nella cronologia Git.</label></div>
           <div class="convert-bottom"><p><span class="green-dot"></span><span id="destination">Collega il tuo repository per iniziare</span></p><button id="convert-button" class="primary" disabled>Converti in Word <span>↗</span></button></div>
         </section>
         <section id="progress-card" class="progress-card" hidden aria-labelledby="progress-title"><div class="progress-heading"><span class="pulse" id="progress-icon"></span><h2 id="progress-title">Preparazione</h2><span id="elapsed" class="subtle"></span></div><p id="progress-message" role="status" aria-live="polite"></p><div class="progress-track"><span id="progress-bar"></span></div><div class="progress-actions"><a id="run-link" class="text-link" target="_blank" rel="noopener noreferrer" hidden>Apri esecuzione su GitHub ↗</a><a id="download-link" class="primary" target="_blank" rel="noopener noreferrer" hidden>Scarica ZIP su GitHub ↓</a><button id="resume-button" class="secondary" hidden>Riprendi controllo</button></div><p class="small-note">Per il download accedi anche a github.com con il tuo account. I risultati vengono conservati per 1 giorno.</p></section>
         <div id="notice" class="notice" role="alert" hidden></div>
         <div class="benefits"><div><span>01 /</span><h3>Collega il tuo account</h3><p>Un token limitato al repository, tenuto solo in memoria.</p></div><div><span>02 /</span><h3>Lascia lavorare le Actions</h3><p>La conversione parte su GitHub. Può richiedere qualche minuto.</p></div><div><span>03 /</span><h3>Scarica e continua</h3><p>Trovi il risultato e un report nello ZIP della conversione.</p></div></div>
-        <footer><span>PDF Studio <span class="footer-slash">/</span> Strumenti semplici, codice aperto.</span><a href="https://github.com/MastroFornaio08/pdf-studio-web/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">Licenza MIT ↗</a></footer>
+        <footer><span>PDF Studio <span class="footer-slash">/</span> Strumenti semplici, codice aperto.</span><a href="https://github.com/MastroFornaio08/pdf-actions/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">Licenza MIT ↗</a></footer>
       </section>
     </main>
   </div>
