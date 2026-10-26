@@ -38,10 +38,25 @@
       if (response.status === 204) return null;
       const data = await response.json().catch(() => ({}));
       if (!response.ok) {
-        const hints = {401: 'Token non valido o scaduto.', 403: 'Permessi insufficienti o quota GitHub raggiunta.',
+        const hints = {401: 'Token non valido o scaduto.',
           404: 'Repository o workflow non accessibile. Controlla il nome e i repository autorizzati nel token.',
           422: 'GitHub non ha accettato la richiesta. Verifica che il workflow sia sul branch predefinito.'};
-        const error = new Error(hints[response.status] || `GitHub ha risposto con errore ${response.status}.`);
+        const stage = path.startsWith('/contents/') ? 'caricamento file (Contents: Read and write)'
+          : path.endsWith('/dispatches') ? 'avvio conversione (Actions: Read and write)'
+            : path.startsWith('/actions/') ? 'accesso alle Actions (Actions: Read and write)'
+              : 'accesso al repository';
+        const detail = typeof data.message === 'string' ? data.message.replaceAll(this.#token, '[token omesso]').slice(0, 500) : '';
+        const remaining = response.headers?.get('x-ratelimit-remaining');
+        const retryAfter = response.headers?.get('retry-after');
+        const limited = response.status === 429 || remaining === '0' || /rate limit/i.test(detail);
+        let message = hints[response.status] || `GitHub ha risposto con errore ${response.status}.`;
+        if (response.status === 403 || response.status === 429) {
+          message = limited
+            ? `Limite temporaneo delle API GitHub durante ${stage}. ${retryAfter ? `Attendi almeno ${retryAfter} secondi.` : 'Attendi prima di riprovare.'}`
+            : `Permessi GitHub (403) durante ${stage}.`;
+          if (detail) message += ` Risposta GitHub: ${detail}`;
+        }
+        const error = new Error(message);
         error.status = response.status;
         throw error;
       }
@@ -57,7 +72,7 @@
       if (!repo.permissions?.push) throw new Error('Il token deve consentire la scrittura nel repository.');
       try { await this.request('/actions/workflows/convert.yml'); }
       catch (error) {
-        if (error.status === 404 || error.status === 403) throw new Error(`Repository ${this.owner}/${this.repo} raggiungibile, ma workflow non accessibile. Nel token imposta Actions: Read and write e salva. Verifica anche che convert.yml sia presente e che GitHub Actions sia abilitato.`);
+        if (error.status === 404) throw new Error(`Repository ${this.owner}/${this.repo} raggiungibile, ma workflow non accessibile. Nel token imposta Actions: Read and write e salva. Verifica anche che convert.yml sia presente e che GitHub Actions sia abilitato.`);
         throw error;
       }
       this.branch = repo.default_branch;
