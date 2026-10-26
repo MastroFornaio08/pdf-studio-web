@@ -28,7 +28,7 @@
     $('format-note').textContent = operation === 'pdf_to_excel'
       ? 'Estrae tabelle delimitate da bordi. Non ricostruisce formule o l’intero foglio originale.'
       : pdf && !['pdf_to_png', 'pdf_to_jpg'].includes(operation)
-        ? 'Serve un PDF con testo selezionabile. Le scansioni richiedono OCR, non incluso.'
+        ? 'OCR automatico per le scansioni, in italiano e inglese. In Word l’impaginazione OCR è semplificata.'
         : operation === 'images_to_pdf' ? 'Un PDF per immagine. I TIFF multipagina conservano tutti i frame.'
           : operation === 'office_to_pdf' ? 'Conversione con LibreOffice. Font e impaginazione possono differire dall’originale.'
             : 'Un’immagine per pagina, a 150 DPI. Funziona anche con PDF scansionati.';
@@ -138,7 +138,7 @@
           const success = run.conclusion === 'success';
           progress(success && artifacts.length ? 'Il tuo documento è pronto' : success ? 'Conversione completata' : 'La conversione non è riuscita',
             success ? artifacts.length ? 'Scarica lo ZIP con il file convertito e il report.' : 'Il risultato non è disponibile. Controlla gli artifact su GitHub: potrebbero essere scaduti.'
-              : artifacts.length ? 'Scarica lo ZIP e leggi report.json per il motivo. Per esempio, una scansione richiede OCR.'
+              : artifacts.length ? 'Scarica lo ZIP e leggi report.json per il motivo, per esempio una scansione poco leggibile.'
                 : 'Apri l’esecuzione su GitHub e controlla il passaggio in errore.', 100, true);
           busy = false; $('resume-button').hidden = true; refresh(); return;
         }
